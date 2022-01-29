@@ -43,17 +43,14 @@ from .utils.user_details import get_chat_dec
 @register(cmds='botchanges', is_op=True)
 async def botchanges(message):
     command = "git log --pretty=format:\"%an: %s\" -30"
-    text = "<b>Bot changes:</b>\n"
-    text += "<i>Showed last 30 commits</i>\n"
+    text = "<b>Bot changes:</b>\n" + "<i>Showed last 30 commits</i>\n"
     text += await chat_term(message, command)
     await message.reply(text, disable_web_page_preview=True)
 
 
 @register(cmds='allcommands', is_op=True)
 async def all_commands_list(message):
-    text = ""
-    for cmd in REGISTRED_COMMANDS:
-        text += "* /" + cmd + "\n"
+    text = "".join("* /" + cmd + "\n" for cmd in REGISTRED_COMMANDS)
     await message.reply(text)
 
 
@@ -66,9 +63,7 @@ async def all_cmds_aliases_list(message):
 
 @register(cmds='loadedmodules', is_op=True)
 async def all_modules_list(message):
-    text = ""
-    for module in LOADED_MODULES:
-        text += "* " + module.__name__ + "\n"
+    text = "".join("* " + module.__name__ + "\n" for module in LOADED_MODULES)
     await message.reply(text)
 
 

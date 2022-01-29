@@ -62,9 +62,7 @@ def markdown_to_text(markdown_string: str) -> str:
 
     # extract text
     soup = bs4.BeautifulSoup(html, "html.parser")
-    text = "".join(soup.findAll(text=True))
-
-    return text
+    return "".join(soup.findAll(text=True))
 
 
 @register(cmds="anime")
@@ -269,8 +267,9 @@ async def anilist_character(message, strings):
     if hasattr(character, "description"):
         if len(character.description) > 700:
             desc = strings["char_desc"].format(
-                desc=f"{markdown_to_text(character.description)[0:500]}[...]"
+                desc=f'{markdown_to_text(character.description)[:500]}[...]'
             )
+
         else:
             desc = strings["char_desc"].format(
                 desc=markdown_to_text(character.description)
@@ -328,9 +327,7 @@ async def site_search(message, strings, site: str):
             return
 
         soup = bs4.BeautifulSoup(html_text.text, "lxml")
-        search_result = soup.find_all("h2", {"class": "post-title"})
-
-        if search_result:
+        if search_result := soup.find_all("h2", {"class": "post-title"}):
             result = strings["search_kaizoku"].format(query=html.escape(search_query))
             for entry in search_result:
                 post_link = entry.a["href"]

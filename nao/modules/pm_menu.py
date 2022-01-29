@@ -63,10 +63,24 @@ async def get_start_func(message, strings, edit=False):
     buttons = InlineKeyboardMarkup()
     buttons.add(InlineKeyboardButton(strings['btn_help'], callback_data='get_help'),
                 InlineKeyboardButton(strings['btn_channel'], url='https://t.me/NaoUpdates'))
-    buttons.add(InlineKeyboardButton(strings['btn_chat'], url='https://t.me/BotLabTeam'),
-                InlineKeyboardButton(strings['btn_add'], url=f'https://telegram.me/NaoTomoriRobot?startgroup=true'))
-    buttons.add(InlineKeyboardButton(strings['btn_source'], url=f'https://github.com/WeebTime/NaoTomoriRobot'),
-                InlineKeyboardButton(strings['btn_lang'], callback_data='lang_btn'))
+    buttons.add(
+        InlineKeyboardButton(
+            strings['btn_chat'], url='https://t.me/BotLabTeam'
+        ),
+        InlineKeyboardButton(
+            strings['btn_add'],
+            url='https://telegram.me/NaoTomoriRobot?startgroup=true',
+        ),
+    )
+
+    buttons.add(
+        InlineKeyboardButton(
+            strings['btn_source'],
+            url='https://github.com/WeebTime/NaoTomoriRobot',
+        ),
+        InlineKeyboardButton(strings['btn_lang'], callback_data='lang_btn'),
+    )
+
     # Handle error when user click the button 2 or more times simultaneously
     with suppress(MessageNotModified):
         await task(strings['start_hi'], reply_markup=buttons)
@@ -116,7 +130,7 @@ async def help_cmd_g(message, strings):
 @get_strings_dec('pm_menu')
 async def helpmenu_callback(query, strings, callback_data=None, **kwargs):
     mod = callback_data['mod']
-    if not mod in MOD_HELP:
+    if mod not in MOD_HELP:
         await query.answer()
         return
     msg = strings["help_for"].format(mod_name=mod)
